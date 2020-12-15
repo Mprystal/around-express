@@ -18,6 +18,9 @@ module.exports = {
     'react',
   ],
   rules: {
-    'no-underscore-dangle': 'off',
+    'linebreak-style': 0,
+    'no-underscore-dangle': 0,
+    'no-console': 0,
+    'no-trailing-whitespace': 0,
   },
 };
