@@ -5,14 +5,13 @@ const router = express.Router();
 const path = require('path');
 
 function getFilePath(file) {
-  return fs.readFile(file, { encoding: 'utf-8' }).then(JSON.parse).catch(() => '{ "message": "Server Error" }');
-  //I dont know how to send a status code in a catch.. Everything online is using console.log that I can find. Getting no help with this as well.
+  return fs.readFile(file, { encoding: 'utf-8' }).then(JSON.parse).catch((err) => { console.log(err); throw new Error(err); });
 }
 
 router.get('/users', (req, res) => {
   const fileUsersData = path.join(__dirname, '..', 'data', 'usersDatl.json');
 
-  getFilePath(fileUsersData).then((users) => { res.send(users); });
+  getFilePath(fileUsersData).then((users) => { res.send(users).catch(() => res.status(500).send('{ "message": "Sever Error" }')); });
 });
 
 router.get('/users/:id', (req, res) => {
