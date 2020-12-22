@@ -10,7 +10,7 @@ function getFilePath(file) {
 
 router.get('/cards', (req, res) => {
   const fileCardsData = path.join(__dirname, '..', 'data', 'cardsData.json');
-  getFilePath(fileCardsData).then((cards) => { res.status(200).send(cards); }).catch(() => res.status(500).send('{ "message": "Sever Error" }'));
+  getFilePath(fileCardsData).then((cards) => { res.status(200).send(cards); }).catch(() => res.status(500).send({ message: 'Sever Error' }));
 });
 
 module.exports = router;
