@@ -9,9 +9,9 @@ function getFilePath(file) {
 }
 
 router.get('/users', (req, res) => {
-  const fileUsersData = path.join(__dirname, '..', 'data', 'usersDatl.json');
+  const fileUsersData = path.join(__dirname, '..', 'data', 'usersData.json');
 
-  getFilePath(fileUsersData).then((users) => { res.send(users).catch(() => res.status(500).send('{ "message": "Sever Error" }')); });
+  getFilePath(fileUsersData).then((users) => { res.status(200).send(users); }).catch(() => res.status(500).send('{ "message": "Sever Error" }'));
 });
 
 router.get('/users/:id', (req, res) => {
