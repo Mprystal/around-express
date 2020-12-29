@@ -23,4 +23,9 @@ module.exports = {
     'no-console': 0,
     'no-trailing-whitespace': 0,
   },
+  settings: {
+    react: {
+      version: '999.999.999',
+    },
+  },
 };
