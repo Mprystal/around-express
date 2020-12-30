@@ -5,13 +5,13 @@ const getUsers = (req, res) => {
 };
 
 const getUsersById = (req, res) => {
-  User.find({ _id: req.params.id })
+  User.findById(req.params.id)
     .then((user) => {
-      if (user) {
-        return res.status(200).send(user);
+      if (!user) {
+        return res.status(404).send({ message: 'User ID not found' });
       }
-      return res.status(404).send({ message: 'User ID not found' });
-    });
+      return res.status(200).send(user);
+    }).catch(() => res.status(400).send({ message: 'User Id not valid' }));
 };
 
 const createUser = (req, res) => {
@@ -24,14 +24,24 @@ const createUser = (req, res) => {
 const updateProfile = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .then((profile) => res.send({ data: profile }))
+    .then((profile) => {
+      if (!profile) {
+        return res.status(404).send({ message: 'Not valid profile id' });
+      }
+      return res.send({ data: profile });
+    })
     .catch(() => res.status(400).send({ message: 'User cannot be patched' }));
 };
 
 const updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
-    .then((userAvatar) => res.send({ data: userAvatar }))
+    .then((userAvatar) => {
+      if (!userAvatar) {
+        return res.status(404).send({ message: 'Not valid profile id' });
+      }
+      return res.send({ data: userAvatar });
+    })
     .catch(() => res.status(400).send({ message: 'User cannot be patched' }));
 };
 

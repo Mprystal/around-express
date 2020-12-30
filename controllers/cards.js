@@ -13,7 +13,12 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId).then((card) => res.send({ data: card }))
+  Card.findByIdAndRemove(req.params.cardId).then((card) => {
+    if (!card) {
+      return res.status(404).send({ message: 'No card with such id' });
+    }
+    return res.send({ data: card });
+  })
     .catch(() => res.status(400).send({ message: 'Card cannot be deleted' }));
 };
 
@@ -22,7 +27,12 @@ const likeCard = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
-  ).then(() => res.send()).catch(() => res.status(400).send({ message: 'Card cannot be liked' }));
+  ).then((likeId) => {
+    if (likeId === null) {
+      return res.status(404).send({ message: 'No card with such id' });
+    }
+    return res.send();
+  }).catch(() => res.status(400).send({ message: 'Card cannot be liked' }));
 };
 
 const unLikeCard = (req, res) => {
@@ -30,7 +40,12 @@ const unLikeCard = (req, res) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
-  ).then(() => res.send()).catch(() => res.status(400).send({ message: 'Card cannot be unLiked' }));
+  ).then((likeId) => {
+    if (likeId === null) {
+      return res.status(404).send({ message: 'No card with such id' });
+    }
+    return res.send();
+  }).catch(() => res.status(400).send({ message: 'Card cannot be unLiked' }));
 };
 
 module.exports = {

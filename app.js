@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 
 const { PORT = 3000 } = process.env;
 
@@ -16,9 +17,11 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useFindAndModify: false,
 });
 
+app.use(helmet());
+
 app.use((req, res, next) => {
   req.user = {
-    _id: '5fea1af510a53f652485ecf6',
+    _id: '5fea1af510a53f652485ecf7',
   };
 
   next();
